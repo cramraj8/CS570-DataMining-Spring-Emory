@@ -1,0 +1,67 @@
+{
+  "cmd_args" : {
+    "mode": "experiment",
+    "device": "cuda:0",
+    "no_cuda": false,
+    "seed": 420,
+    "test": false
+  },
+  "name": "exp2",
+  "data": {
+    "max_query_len": 64,
+    "max_seq_len": 512,
+    "results_dir": "./exp2",
+    "train_data": "../Entity-Linking/Train-with-entities/",
+    "test_data": "../Entity-Linking/Test-with-entities/ramraj-test-data-top100-BM25-opt.json",
+    "pretrained_download_dir": "./pretrained_download_dir"
+  },
+  "model": {
+    "bert-model": true,
+    "vocab_size": 40000,
+    "emb_size": 300
+  },
+  "fineTunerModel": {
+    "num_classes": 1,
+    "num_hidden_units_1": 768,
+    "dropout_1": 0.3,
+    "interaction_layer": {
+      "max_q_len": 20,
+      "max_doc_len": 200
+    }
+  },
+  "training": {
+    "optimizer": {
+      "type": "Adam",
+      "params": {
+        "lr": 0.004,
+        "amsgrad": true
+      },
+      "scheduler": {
+        "type": "CyclicLR",
+        "params": {
+          "base_lr": 0.0001,
+          "max_lr": 0.004,
+          "step_size": 5,
+          "mode": "triangular"
+        }
+      }
+    },
+    "epochs": 4,
+    "display_step": 1,
+    "train_batch_size": 16,
+    "test_batch_size": 256,
+    "num_workers": 1,
+    "gradient_clipping": {
+      "use": true,
+      "clip_value": 1.0
+    },
+    "shuffle": true,
+    "warmup_propagation": 0,
+    "learning_rate": 1e-5,
+    "decay_rate": 0.99,
+    "decay_step": 100000,
+    "total_training_steps": 500000
+  },
+  "bert_token_file": "bert-base-uncased",
+  "bert_model_file": "bert-base-uncased"
+}
